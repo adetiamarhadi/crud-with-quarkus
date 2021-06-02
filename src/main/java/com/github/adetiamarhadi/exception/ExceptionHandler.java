@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 public class ExceptionHandler implements ExceptionMapper<Exception> {
     @Override
     public Response toResponse(Exception e) {
+        e.printStackTrace();
         ResponseCodeDto responseCodeDto = new ResponseCodeDto(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),
                 "the request can not be processed");
         return Response.status(Response.Status.BAD_REQUEST).entity(responseCodeDto).build();

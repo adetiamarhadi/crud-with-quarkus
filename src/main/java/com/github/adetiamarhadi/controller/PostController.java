@@ -1,45 +1,35 @@
 package com.github.adetiamarhadi.controller;
 
 import com.github.adetiamarhadi.dto.PostDto;
+import com.github.adetiamarhadi.exception.CustomException;
+import com.github.adetiamarhadi.service.PostService;
 
+import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
-import java.util.UUID;
 
 @Path("/post")
 public class PostController {
+
+    @Inject
+    PostService postService;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public PostDto save(@Valid PostDto postDto) {
 
-        PostDto response = new PostDto(UUID.randomUUID().toString(),
-                postDto.getTitle(),
-                postDto.getContent(),
-                List.of());
-
-        return response;
+        return this.postService.save(postDto);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<PostDto> getPostDtoList() {
 
-        PostDto postDto = new PostDto(UUID.randomUUID().toString(),
-                "Java Master",
-                "Java from Beginner to Master",
-                List.of());
-
-        PostDto postDto2 = new PostDto(UUID.randomUUID().toString(),
-                "Angular Master",
-                "Angular from Beginner to Master",
-                List.of());
-
-        return List.of(postDto, postDto2);
+        return this.postService.findAll();
     }
 
     @GET
@@ -47,12 +37,11 @@ public class PostController {
     @Produces(MediaType.APPLICATION_JSON)
     public PostDto getPostDto(@PathParam("id") String id) {
 
-        PostDto postDto = new PostDto(id,
-                "Java Master",
-                "Java from Beginner to Master",
-                List.of());
+        if (null == id || id.trim().length() == 0) {
+            throw new CustomException("id may not be blank");
+        }
 
-        return postDto;
+        return this.postService.findById(Long.parseLong(id));
     }
 
     @PUT
@@ -61,17 +50,23 @@ public class PostController {
     @Produces(MediaType.APPLICATION_JSON)
     public PostDto update(@PathParam("id") String id, @Valid PostDto postDto) {
 
-        PostDto response = new PostDto(id,
-                postDto.getTitle(),
-                postDto.getContent(),
-                List.of());
+        if (null == id || id.trim().length() == 0) {
+            throw new CustomException("id may not be blank");
+        }
 
-        return response;
+        return this.postService.update(Long.parseLong(id), postDto);
     }
 
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") String id) {
+
+        if (null == id || id.trim().length() == 0) {
+            throw new CustomException("id may not be blank");
+        }
+
+        this.postService.delete(Long.parseLong(id));
+
         return Response.ok().build();
     }
 }
