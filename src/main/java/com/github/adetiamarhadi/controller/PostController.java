@@ -2,6 +2,7 @@ package com.github.adetiamarhadi.controller;
 
 import com.github.adetiamarhadi.dto.PostDto;
 
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -14,7 +15,7 @@ public class PostController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public PostDto save(PostDto postDto) {
+    public PostDto save(@Valid PostDto postDto) {
 
         PostDto response = new PostDto(UUID.randomUUID().toString(),
                 postDto.getTitle(),
@@ -58,7 +59,7 @@ public class PostController {
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public PostDto update(@PathParam("id") String id, PostDto postDto) {
+    public PostDto update(@PathParam("id") String id, @Valid PostDto postDto) {
 
         PostDto response = new PostDto(id,
                 postDto.getTitle(),

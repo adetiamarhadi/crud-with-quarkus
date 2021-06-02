@@ -1,10 +1,13 @@
 package com.github.adetiamarhadi.dto;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 public class TagDto {
 
     private String id;
+
+    @NotBlank(message = "label may not be blank")
     private String label;
     private List<PostDto> postDtoList;
 
