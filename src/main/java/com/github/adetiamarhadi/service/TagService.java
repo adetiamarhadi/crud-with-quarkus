@@ -1,6 +1,6 @@
 package com.github.adetiamarhadi.service;
 
-import com.github.adetiamarhadi.dto.TagDto;
+import com.github.adetiamarhadi.dto.TagEntity;
 import com.github.adetiamarhadi.exception.CustomException;
 import com.github.adetiamarhadi.repository.TagRepository;
 
@@ -17,36 +17,36 @@ public class TagService {
     TagRepository tagRepository;
 
     @Transactional
-    public TagDto save(TagDto tagDto) {
+    public TagEntity save(TagEntity tagEntity) {
 
-        TagDto data = new TagDto();
-        data.setLabel(tagDto.getLabel());
+        TagEntity data = new TagEntity();
+        data.setLabel(tagEntity.getLabel());
 
         this.tagRepository.persist(data);
 
         return data;
     }
 
-    public List<TagDto> findAll() {
+    public List<TagEntity> findAll() {
 
         return this.tagRepository.findAll().list();
     }
 
-    public TagDto findById(Long id) {
+    public TagEntity findById(Long id) {
 
         return this.tagRepository.findById(id);
     }
 
     @Transactional
-    public TagDto update(Long id, TagDto tagDto) {
+    public TagEntity update(Long id, TagEntity tagEntity) {
 
-        TagDto data = this.tagRepository.findById(id, LockModeType.PESSIMISTIC_WRITE);
+        TagEntity data = this.tagRepository.findById(id, LockModeType.PESSIMISTIC_WRITE);
 
         if (null == data) {
             throw new CustomException("tag with id "+ id +" not found");
         }
 
-        data.setLabel(tagDto.getLabel());
+        data.setLabel(tagEntity.getLabel());
 
         this.tagRepository.persist(data);
 
@@ -56,7 +56,7 @@ public class TagService {
     @Transactional
     public void delete(Long id) {
 
-        TagDto data = this.tagRepository.findById(id, LockModeType.PESSIMISTIC_WRITE);
+        TagEntity data = this.tagRepository.findById(id, LockModeType.PESSIMISTIC_WRITE);
 
         if (null == data) {
             throw new CustomException("tag with id "+ id +" not found");

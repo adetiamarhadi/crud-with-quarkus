@@ -1,5 +1,7 @@
 package com.github.adetiamarhadi.dto;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 import javax.persistence.Entity;
@@ -11,7 +13,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "tb_post")
-public class PostDto extends PanacheEntity {
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+public class PostEntity extends PanacheEntity {
 
     @NotBlank(message = "title may not be blank")
     private String title;
@@ -19,8 +22,8 @@ public class PostDto extends PanacheEntity {
     @NotBlank(message = "content may not be blank")
     private String content;
 
-    @ManyToMany(mappedBy = "postDtoList")
-    private List<TagDto> tagDtoList = new ArrayList<>();
+    @ManyToMany(mappedBy = "postEntityList")
+    private List<TagEntity> tagEntityList = new ArrayList<>();
 
     public String getTitle() {
         return title;
@@ -38,7 +41,11 @@ public class PostDto extends PanacheEntity {
         this.content = content;
     }
 
-    public void addTagDtoList(TagDto tagDto) {
-        this.tagDtoList.add(tagDto);
+    public void addTagDtoList(TagEntity tagEntity) {
+        this.tagEntityList.add(tagEntity);
+    }
+
+    public List<TagEntity> getTagEntityList() {
+        return tagEntityList;
     }
 }

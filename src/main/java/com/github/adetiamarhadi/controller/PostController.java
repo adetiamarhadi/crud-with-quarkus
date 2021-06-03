@@ -1,6 +1,7 @@
 package com.github.adetiamarhadi.controller;
 
-import com.github.adetiamarhadi.dto.PostDto;
+import com.github.adetiamarhadi.dto.Post;
+import com.github.adetiamarhadi.dto.PostEntity;
 import com.github.adetiamarhadi.exception.CustomException;
 import com.github.adetiamarhadi.service.PostService;
 
@@ -20,14 +21,14 @@ public class PostController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public PostDto save(@Valid PostDto postDto) {
+    public Post save(@Valid Post post) {
 
-        return this.postService.save(postDto);
+        return this.postService.save(post);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<PostDto> getPostDtoList() {
+    public List<PostEntity> getPostDtoList() {
 
         return this.postService.findAll();
     }
@@ -35,7 +36,7 @@ public class PostController {
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public PostDto getPostDto(@PathParam("id") String id) {
+    public PostEntity getPostDto(@PathParam("id") String id) {
 
         if (null == id || id.trim().length() == 0) {
             throw new CustomException("id may not be blank");
@@ -48,13 +49,15 @@ public class PostController {
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public PostDto update(@PathParam("id") String id, @Valid PostDto postDto) {
+    public PostEntity update(@PathParam("id") String id, Post post) {
 
         if (null == id || id.trim().length() == 0) {
             throw new CustomException("id may not be blank");
         }
 
-        return this.postService.update(Long.parseLong(id), postDto);
+        this.postService.update(Long.parseLong(id), post);
+
+        return this.postService.findById(Long.parseLong(id));
     }
 
     @DELETE

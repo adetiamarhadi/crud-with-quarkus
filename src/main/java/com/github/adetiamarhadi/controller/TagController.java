@@ -1,6 +1,6 @@
 package com.github.adetiamarhadi.controller;
 
-import com.github.adetiamarhadi.dto.TagDto;
+import com.github.adetiamarhadi.dto.TagEntity;
 import com.github.adetiamarhadi.exception.CustomException;
 import com.github.adetiamarhadi.service.TagService;
 
@@ -20,14 +20,14 @@ public class TagController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public TagDto save(@Valid TagDto tagDto) {
+    public TagEntity save(@Valid TagEntity tagEntity) {
 
-        return this.tagService.save(tagDto);
+        return this.tagService.save(tagEntity);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<TagDto> getTagDtoList() {
+    public List<TagEntity> getTagDtoList() {
 
         return this.tagService.findAll();
     }
@@ -35,7 +35,7 @@ public class TagController {
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public TagDto getTagDto(@PathParam("id") String id) {
+    public TagEntity getTagDto(@PathParam("id") String id) {
 
         if (null == id || id.trim().length() == 0) {
             throw new CustomException("id may not be blank");
@@ -48,13 +48,13 @@ public class TagController {
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public TagDto update(@PathParam("id") String id, @Valid TagDto tagDto) {
+    public TagEntity update(@PathParam("id") String id, @Valid TagEntity tagEntity) {
 
         if (null == id || id.trim().length() == 0) {
             throw new CustomException("id may not be blank");
         }
 
-        return this.tagService.update(Long.parseLong(id), tagDto);
+        return this.tagService.update(Long.parseLong(id), tagEntity);
     }
 
     @DELETE
